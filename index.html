@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b111d" />
+  <meta name="description" content="Pancadaria Eleitoral: explore uma praça virtual inspirada em São Paulo e enfrente NPCs na arena de luta." />
+  <title>Pancadaria Eleitoral — Praça & Arena</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="loading" role="status"><div class="loader-logo">P<span>!</span>E</div><div class="loader-line"><i></i></div><p>Preparando a praça...</p></div>
+  <canvas id="world" aria-label="Mundo virtual 3D de Pancadaria Eleitoral"></canvas>
+  <div class="grain"></div>
+  <div class="game-ui" id="gameUI">
+    <header class="topbar">
+      <div class="logo"><span class="logo-mark">P<span>!</span>E</span><div><strong>PANCADARIA<br>ELEITORAL</strong><small>EDIÇÃO SÃO PAULO</small></div></div>
+      <div class="top-center"><span class="live-dot"></span><span>VALE DO ANHANGABAÚ</span><span class="divider-dot">·</span><span id="worldClock">PRAÇA LIVRE</span></div>
+      <div class="top-actions"><span class="online-pill"><i></i> MODO NPC <span class="help" title="Esta versão usa personagens simulados, não jogadores conectados.">?</span></span><button class="ui-button" id="settingsBtn" aria-label="Configurações">⚙</button></div>
+    </header>
+    <aside class="left-panel">
+      <div class="small-kicker">TEMPORADA ZERO <span>•</span> DEMONSTRAÇÃO</div>
+      <h1>Uma praça.<br><em>Dois lados.</em><br>Mil tretas.</h1>
+      <p>Explore São Paulo, conheça as torcidas e entre no ringue. A provocação é no jogo.</p>
+      <div class="team-badge" id="teamBadge">🇧🇷 Sua torcida</div>
+      <div class="quick-stats"><div><strong id="coins">350</strong><span>🪙 TRETA COINS</span></div><div><strong id="wins">0</strong><span>🏆 VITÓRIAS</span></div></div>
+      <div class="panel-buttons"><button id="fightBtn" class="gold-btn">⚔ ENTRAR NA ARENA <b>↗</b></button><button id="shopBtn" class="outline-btn">🛍 LOJA DE ITENS <b>↗</b></button></div>
+      <div class="mini-note">NOVIDADE <span>•</span> Bandeiras, acessórios e NPCs na praça</div>
+    </aside>
+    <div class="location-label"><span class="radar"></span><div><small>VOCÊ ESTÁ EM</small><strong id="areaName">PRAÇA CENTRAL</strong></div></div>
+    <div class="bottom-left"><div class="control-key">W<br><small>A S D</small></div><span>MOVER</span><div class="control-key">SHIFT</div><span>CORRER</span><div class="control-key">E</div><span>INTERAGIR</span></div>
+    <div class="bottom-right"><button id="cameraBtn">◉ <span>CÂMERA</span></button><button id="flagBtn">⚑ <span>BANDEIRA</span></button></div>
+    <div id="interaction" class="interaction hidden"><span>E</span><strong id="interactionText">Interagir</strong></div>
+    <div class="mobile-controls"><div class="dpad"><button data-move="forward">▲</button><div><button data-move="left">◀</button><button data-move="back">▼</button><button data-move="right">▶</button></div></div><button id="mobileAction">⚔<small>AÇÃO</small></button></div>
+    <div class="toast" id="toast" role="status"></div>
+  </div>
+  <div id="welcome" class="modal-root open"><div class="welcome-bg"></div><div class="welcome-box"><div class="kicker">UM JOGO DE HUMOR E COMPETIÇÃO</div><div class="hero-emblem">P<span>!</span>E</div><h2>ESCOLHA SEU <em>LADO.</em></h2><p>Crie sua presença na praça mais animada do Brasil. Todos os personagens têm a mesma força e velocidade.</p><div class="team-choice"><button data-team="pt" class="chosen"><span class="team-icon red">★</span><strong>TIME PT</strong><small>Camisa vermelha</small></button><button data-team="br"><span class="team-icon green">✦</span><strong>TIME BRASIL</strong><small>Camisa verde-amarela</small></button></div><div class="select-label">ESCOLHA O PERSONAGEM</div><div class="character-choice" id="characterChoice"></div><button id="enterBtn" class="gold-btn big">ENTRAR NA PRAÇA <b>→</b></button><small class="disclaimer">Paródia fictícia e independente. Nenhum placar representa pesquisa ou resultado eleitoral. NPCs identificados como simulados.</small></div></div>
+  <div id="combatModal" class="modal-root"><div class="dialog combat-dialog"><button class="close" data-close="combatModal">×</button><div class="kicker">COLISEU DA TRETA</div><h2>DESAFIO <em>1 × 1</em></h2><p>Enfrente um NPC. Acerte golpes, defenda-se e vença antes do tempo acabar.</p><div class="fight-visual"><div class="fighter red-side">VOCÊ <strong id="fighterTeam">PT</strong><div class="health"><i id="playerHp"></i></div></div><div class="vs">VS</div><div class="fighter yellow-side">NPC <strong>RIVAL</strong><div class="health"><i id="npcHp"></i></div></div></div><div class="timer-display" id="fightTimer">60</div><div id="fightStatus" class="fight-status">Pronto para lutar?</div><div class="fight-actions"><button id="punchBtn">👊 SOCO <small>J</small></button><button id="kickBtn">🦵 CHUTE <small>K</small></button><button id="blockBtn">🛡 DEFESA <small>L</small></button></div><button class="gold-btn big" id="startFight">COMEÇAR COMBATE →</button><small class="disclaimer">Combate cartunesco, sem sangue. Esta partida é local contra IA.</small></div></div>
+  <div id="shopModal" class="modal-root"><div class="dialog shop-dialog"><button class="close" data-close="shopModal">×</button><div class="shop-heading"><div><div class="kicker">PERSONALIZE SUA TRETA</div><h2>LOJA <em>DA PRAÇA</em></h2></div><div class="balance">🪙 <strong id="shopBalance">350</strong> TC</div></div><p>Vista seu personagem e mostre sua torcida. Itens cosméticos não dão vantagem nas lutas.</p><div class="shop-tabs"><button class="active" data-category="all">TODOS</button><button data-category="flags">BANDEIRAS</button><button data-category="clothes">ROUPAS</button><button data-category="emotes">REAÇÕES</button></div><div class="shop-grid" id="shopGrid"></div><div class="shop-foot">PREÇOS EM REAIS SÃO ILUSTRATIVOS. PAGAMENTOS MERCADO PAGO NÃO ESTÃO ATIVOS NESTA DEMONSTRAÇÃO.</div></div></div>
+  <div id="settingsModal" class="modal-root"><div class="dialog settings-dialog"><button class="close" data-close="settingsModal">×</button><div class="kicker">AJUSTES</div><h2>CONFIGURAÇÕES</h2><label>QUALIDADE GRÁFICA <select id="quality"><option value="auto">Automática</option><option value="low">Leve</option><option value="high">Alta</option></select></label><label><input type="checkbox" id="showNPCs" checked> Exibir NPCs na praça</label><p>Sem áudio por voz nesta versão. Multiplayer, contas e compras reais serão adicionados em etapas futuras.</p></div></div>
+  <script type="module" src="./game.js"></script>
+</body>
+</html>
